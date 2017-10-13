@@ -2,6 +2,7 @@ int LED = 7; //set LED pin
 int SPEED_CONTROL = 0; //create speed control variable
 int POT = A0; //create speed sensor input
 int BLINK_ADJ = 0; //controls blink between LEDs, 1/5 SPEED_CONTROL
+int EDGE_DELAY = 0; //controls delay for end of motion
 
 int letter[26][5] =
 
@@ -62,7 +63,6 @@ int letter[26][5] =
 void setup() {
   pinMode(A0, INPUT); //set A0 to input (not really necessary as it is default) 
   pinMode(LED, OUTPUT); //set LED to be an output
-  pinMode(LED_ADJ, OUTPUT); //test LED for blink adjust output
 }
 
 void loop() {
@@ -70,6 +70,7 @@ void loop() {
   SPEED_CONTROL = analogRead(POT); //get input from sensor (max default is 1023 ~= 1s delay or 1Hz, min is 0)
   BLINK_ADJ = (SPEED_CONTROL / 5); //set the blink adjust between "pixels" or LEDs to be 1/5 that of SPEED_CONTROL (max is .2s delay or 5Hz)
   //test output with direct delay of SPEED_CONTROL
+  EDGE_DELAY = (SPEED_CONTROL * 10); //creates a delay 10 times that of the input
   
   
   int i;
@@ -110,5 +111,5 @@ void loop() {
     delay(BLINK_ADJ);
   }
   PORTB = 0x0;
-  delay(1000);
+  delay(EDGE_DELAY);
 }
